@@ -1,0 +1,6 @@
+{
+    "editor.formatOnSaveMode": "modifications",
+    "editor.formatOnSave": true,
+    "workbench.activityBar.iconClickBehavior": "toggle",
+    "prettier.bracketSameLine": true
+}
