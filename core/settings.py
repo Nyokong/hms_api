@@ -35,7 +35,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = []
 
 # only for development
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
 # For development
 # CORS_ALLOWED_ORIGINS = [
@@ -97,8 +97,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+ASGI_APPLICATION = 'core.routing.application'
 
-# Database
+
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
