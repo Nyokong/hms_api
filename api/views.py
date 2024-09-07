@@ -21,5 +21,5 @@ class FeedbackMessages(generics.GenericAPIView):
         query = FeedbackMessage.objects.all()
         serializer = FeedbackMsgSerializer(query, many=True)
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     

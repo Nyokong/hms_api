@@ -11,11 +11,13 @@ class FeedbackChannel(AsyncWebsocketConsumer):
             self.channel_name
         )
 
+        await self.accept()
+
         await self.channel_layer.group_send(
             self.chat_group,
             {
                 'type':'tester_message',
-                'tester':'tester',
+                'tester':'hellow world',
             }
         )
 
@@ -31,3 +33,24 @@ class FeedbackChannel(AsyncWebsocketConsumer):
             self.chat_group,
             self.channel_name
         )
+
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+
+        await self.channel_layer.group_send(
+            self.chat_group,
+            {
+                'type':'chat_message',
+                'message':message,
+            }
+        )
+
+    async def chatroom_message(self, event):
+        message = event[message]
+
+        await self.send(text_data=json.dumps({
+            'message':message,
+        }))
+
+    pass
