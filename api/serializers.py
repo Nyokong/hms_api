@@ -7,4 +7,4 @@ from .models import FeedbackMessage
 class FeedbackMsgSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedbackMessage
-        fields = ['message']
+        fields = ['user', 'message', 'timestamp']

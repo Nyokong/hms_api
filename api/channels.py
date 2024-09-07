@@ -1,5 +1,10 @@
 import json
+import django
+django.setup()
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
+from .models import FeedbackMessage
+from .serializers import FeedbackMsgSerializer
 
 class FeedbackChannel(AsyncWebsocketConsumer):
     async def connect(self):
@@ -13,21 +18,6 @@ class FeedbackChannel(AsyncWebsocketConsumer):
 
         await self.accept()
 
-        await self.channel_layer.group_send(
-            self.chat_group,
-            {
-                'type':'tester_message',
-                'tester':'hellow world',
-            }
-        )
-
-    async def tester_message(self, event):
-        tester = event['tester']
-
-        await self.send(text_data=json.dumps({
-            'tester':tester,
-        }))
-
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.chat_group,
@@ -37,20 +27,38 @@ class FeedbackChannel(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        user = self.scope['user']
+        
+        # Save the message to the database
+        await self.save_message(user, message)
 
         await self.channel_layer.group_send(
             self.chat_group,
             {
                 'type':'chat_message',
                 'message':message,
+                'user': user
             }
         )
 
-    async def chatroom_message(self, event):
-        message = event[message]
+    async def chat_message(self, event):
+        message = event['message']
+        user = event['user']
+
+        print('message:', message, 'from', user)
 
         await self.send(text_data=json.dumps({
-            'message':message,
+            'message': message,
+            'user': user
         }))
 
-    pass
+    @database_sync_to_async
+    def save_message(self, user, message):
+        data = {'user': user, 'message': message}
+        serializer = FeedbackMsgSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            # Handle the case where the data is not valid
+            print(serializer.errors)
+        # FeedbackMessage.objects.create(user=user, message=message)   
