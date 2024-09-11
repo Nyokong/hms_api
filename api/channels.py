@@ -45,6 +45,7 @@ class FeedbackChannel(AsyncWebsocketConsumer):
         message = event['message']
         user = event['user']
 
+        # somehow this code works
         print('message:', message, 'from', user)
 
         await self.send(text_data=json.dumps({
