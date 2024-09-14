@@ -11,6 +11,7 @@ from .serializers import FeedbackMsgSerializer
 
 
 # feedback messages go here
+# Read all feed back messages
 class FeedbackMessages(generics.GenericAPIView):
 
     # gets users who are authenticated
