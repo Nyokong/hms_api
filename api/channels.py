@@ -57,6 +57,7 @@ class FeedbackChannel(AsyncWebsocketConsumer):
     def save_message(self, user, message):
         data = {'user': user, 'message': message}
         serializer = FeedbackMsgSerializer(data=data)
+        
         if serializer.is_valid():
             serializer.save()
         else:
