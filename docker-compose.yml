@@ -16,10 +16,10 @@ services:
   #     - hms_db
   #     - redis
       
-  hms_db:
+  hms_db-1:
     restart: always
     image: postgres:16.3-alpine3.20
-    container_name: hms_db
+    container_name: hms_db-1
     env_file:
       - ./.env
     ports:

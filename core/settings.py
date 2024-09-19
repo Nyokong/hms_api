@@ -43,12 +43,17 @@ CORS_ALLOW_ALL_ORIGINS = True
 # For development
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:3000",
-#     "http://localhost:5432",
 # ]
 
 # Application definition
 
 INSTALLED_APPS = [
+    # channels
+    'channels',
+    
+    # daphne
+    'daphne',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,11 +67,9 @@ INSTALLED_APPS = [
     # rest framework
     'rest_framework',
 
-    # channels
-    'channels',
-
     # my created modules
     'api',
+
 
 ]
 
@@ -114,7 +117,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-ASGI_APPLICATION = 'core.routing.application'
+ASGI_APPLICATION = 'core.asgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
